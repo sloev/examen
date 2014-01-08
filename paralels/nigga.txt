@@ -1,0 +1,373 @@
+\documentclass[danish,a4paper,12pt]{article}
+\usepackage[danish]{babel} %english skal være med ellers brokker kompileren sig!!
+\usepackage{blindtext}
+\usepackage{fancyhdr}
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{epsfig}
+\usepackage{tocbibind}
+
+\usepackage[T1]{fontenc}
+%\usepackage{pxfonts}
+
+%Makes \subsubsubsectioning possible %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{0ex}%
+   {-3.25ex plus -1ex minus -0.2ex}%
+   {1.5ex plus 0.2ex}%
+   {\normalfont\normalsize\bfseries}}
+\makeatother
+
+\stepcounter{secnumdepth}
+\stepcounter{tocdepth}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\textwidth}{16.5cm} \setlength{\topmargin}{-2cm}
+\setlength{\textheight}{26.0cm} \setlength{\oddsidemargin}{0cm}
+\setlength{\marginparwidth}{3.0cm}
+
+\pagestyle{fancy}
+\fancyhf{} % sletter den nuværende opsætning for header og footer
+\fancyhead[R]{\bfseries\thepage} %skriv sidenumre med fed
+\fancyhead[L]{\footnotesize\leftmark} %skriver den første sektionsoverskrift til venstre med småt
+
+\usepackage{amssymb}
+\usepackage{verbatim}
+\usepackage{float}
+\restylefloat{figure}
+%\usepackage[pdftex,draft]{graphicx} %draft er indsat for at man ikke kompilerer/inkluderer *.eps filer hver gang
+\usepackage{graphicx} %Vælges hvis billeder skal kompileres med
+\usepackage[latin1]{inputenc} %hvis latin1 ikke virker så kan der skrives ansinew
+
+
+%\usepackage[pdftex,pdfauthor={Bjake Sørensen \& Rasmus Rønn},pdftitle={Final report, Oticon}]{hyperref}
+
+
+
+
+
+\usepackage[pdftex]{hyperref}
+\hypersetup{colorlinks=true} \hypersetup{colorlinks=true,
+urlcolor=blue}
+
+
+%\addfig{WIDTH,FILENAME,INDEXTEXT,PICTURETEXT}
+%\addfig{}{}{}{}
+\newcommand{\addfig}[4]{
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=#1\textwidth]{#2}
+\caption[#3]{\label{fig:#2}\footnotesize{#4}}
+\end{center}
+\end{figure}
+}
+
+\graphicspath{{Figures/}} %Change search location of pictures/figures
+
+
+%eksempel:
+%\addfig{1}{er_diagram}{ER diagram for the domain}{ER diagram for the domain}
+
+\newcommand{\reffig}[1]{Figur \ref{fig:#1}}
+
+%eksempel:
+%\reffig{er_diagram}
+
+\newcommand{\refsec}[1]{Afsnit \ref{sec:#1}}
+
+%eskempel, der skal være en \label{sec:konklusion}:
+%\refsec{konklusion}
+
+\newcommand{\refsubsec}[1]{Underafsnit \ref{subsec:#1}}
+
+\newcommand{\reftable}[1]{Tabel \ref{tab:#1}}
+
+%eksempel, der skal være en \label{tab:tabelnavn}
+%\reftable{tabelnavn}
+
+\newcommand{\tablestart}[1]{
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{#1}
+}
+
+\newcommand{\tableend}[3]{
+\end{tabular}
+\caption[#2]{\label{tab:#1}\footnotesize{#10}}
+\end{center}
+\end{table}
+}
+
+\newcommand{\addfiglandscape}[4]{
+\begin{sidewaysfigure}[htbp]
+\centering \epsfig{file=#2,width=#1\textheight,
+height=.65\textheight}
+\caption[#3]{\label{fig:#2}\footnotesize{#10}}
+\end{sidewaysfigure}
+}
+
+\title{Parallel Programming\\Exam notes and quiz answers}
+\author{Daniel Machon}
+\include{titlepage}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Exam notes}
+\newpage
+\subsection{Introduction}
+\subsubsection{Parallel programming}
+\begin{flushleft}
+Parallel programming is the use of multiple computational resources (CPU's, Cores), to solve a problem.
+A problem is divided into subproblems and solved concurrently.\\The problem must be subdivideable, so that
+several instructions can be executed in parallel.\\
+\null
+
+\textbf{Examples of uses of parallel programming:}
+\begin{itemize}
+  \item Weather forecast
+  \item Economic modelling
+  \item Mathematics
+\end{itemize}
+\null
+\textbf{Advantages of parallel computing:}
+\begin{itemize}
+  \item Save time and money. You can increase computation speed by adding more cheap hardware
+  \item It is possible to do several things at a time
+  \item Share computation resources across a network
+\end{itemize}
+\null
+\textbf{Disadvantages of parallel computing:}
+\begin{itemize}
+  \item The speed of serial computation is limited by the amount of time it takes for data to move through a wire.
+  \item At some point, the size of a transistor on the CPU cannot be made smaller.
+  \item More expensive to increase the speed of a single core CPU.
+  \item Increased amount of needed memory, due to overhead of creating the parallel environment.
+  \item If the program is too small, running it in parallel can decrease performance, because of the associated overhead
+  of creating the parallel environment (libraries etc).
+
+\end{itemize}
+\null
+\end{flushleft}
+\begin{flushleft}
+A parallel program's performance to scale is a result of a number of interrelated factors. Simply adding more processors is rarely the answer.
+The algorithm may have inherent limits to scalability. At some point, adding more resources causes performance to decrease.\\
+\end{flushleft}
+
+\textbf{Limiting hardware factors:}
+
+\begin{itemize}
+  \item Memory-cpu bus bandwidth on an SMP (Symmetric Multi-Processor) machine
+  \item Communications network bandwidth
+  \item Amount of memory available on any given machine or set of machines
+  \item Processor clock speed
+\end{itemize}
+
+\textbf{Most computers uses the Von Neumann architecture:}
+\addfig{0.5}{vonNeumann}{}{Von Neumann architecture}
+
+\begin{flushleft}
+\subsubsection{Flynn's taxonomy}
+\null
+\textbf{\small SISD} - Non parallel computation. single processor, executes a single instruction stream,
+to operate on data stored in a single memory. This corresponds to the von Neumann architecture.\\
+\null
+\textbf{\small SIMD} - Parallel computation. All processing units execute the same instruction at any given clock cycle
+Each processing unit can operate on a different data element. GPU's uses this. Synchronous\\
+\null
+\textbf{\small MISD} - Parallel computation. Each processing unit operates on the data independently via separate instruction streams.
+A single data stream is fed into multiple processing units. Rarely used.\\
+ \null
+\textbf{\small MIMD} - Parallel computation. Every processor executes a different instruction steam, and every processor executes
+a different data stream. Execution can be synchronous or asynchronous. Most common type of parallel computer - most modern supercomputers fall into this category.
+many MIMD architectures also include SIMD execution sub-component.\\
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+\subsubsection{Amdahl's Law}
+\null
+Amdahl's law says that the speedup of a program depends on the fraction of the program code (P) that
+can be parallelized.\\
+\null
+
+Speedup = $\frac{\displaystyle 1}{\displaystyle 1 - P}$\\
+
+Speedup = $\frac{\displaystyle 1}{\displaystyle \frac{\displaystyle P}{\displaystyle N} + S}$\footnote{Where S = serial fraction, and N = number of processors}\\
+\null
+\end{flushleft}
+\begin{flushleft}
+\textbf{\large Shared memory}\\
+\null
+\textbf{UMA} - All processors have access to the same address space. Changes in the memory space are visible to all processors.\\
+\null
+\textbf{NUMA} - Several SMP's linked together by physical busses. One SMP have access to another SMP's memory by a link (slower)\\
+\null
+\textbf{Advantages}
+\begin{itemize}
+  \item Global address space provides a user-friendly programming perspective to memory
+  \item Data sharing between tasks is both fast and uniform due to the proximity of memory to CPUs
+\end{itemize}
+\textbf{Disadvantages}
+\begin{itemize}
+  \item Adding more CPU's will result on more traffic on the CPU to memory bus.
+  \item Programmer responsibility for synchronization.
+\end{itemize}
+\null
+\end{flushleft}
+
+\begin{flushleft}
+\textbf{\large Distributed memory}\\
+Processors have their own private address space. A processor does not have direct access to another processors memory.
+If one processor needs data from another, they can exchange data using, for instance, sockets.\\
+\null
+\textbf{Advantages}
+\begin{itemize}
+  \item Memory is scalable with the number of processors. Increase the number of processors and the size of memory increases proportionately
+  \item Each processor can rapidly access its own memory without interference and without the overhead incurred with trying to maintain global cache coherency.
+\end{itemize}
+\textbf{Disadvantages}
+\begin{itemize}
+  \item The programmer is responsible for the inter-processor communication
+\end{itemize}
+\end{flushleft}
+\newpage
+
+\subsection{Multi-programming With Shared Memory}
+
+\subsubsection{Processes and Threads}
+\begin{flushleft}
+Parallel programming can be achieved with both processes and threads. The programmer needs to
+explicitly write the code to take advantage of parallelism. Some ways to write parallel code:
+\begin{itemize}
+  \item Using an already parallel programming language (Ada)
+  \item Modifying the syntax of an existing sequential programming
+language to create a parallel programming language. Example UPC
+  \item Using an existing sequential programming language
+supplemented with compiler directives and libraries for
+specifying parallelism. Example: OpenMP and Pthreads are
+based on a library solution.\\
+\end{itemize}
+A process and a thread makes up of an \textbf{Identification}, and \textbf{Instance of all CPU register (also IP)},
+a \textbf{Stack} and eventually a \textbf{Priority}
+\addfig{0.5}{Process}{}{Process}
+\addfig{0.5}{Thread}{}{Thread}
+
+If a thread is dependant on some other thread, it can call the join() function to wait for that thread to
+terminate. If two threads are independant and dont care when on another terminates, they are called \textbf{detached}.\\
+\null
+\subsubsection{Thread synchronization}
+Threads within a process have access to the same shared data. The shared data that two threads may be interested in manipulating,
+is called the \textbf{critical section}. There are several ways to ensure that only one thread has access to the critical section
+at once.\footnote{Described in chapter 4 - Pthreads}
+\subsubsection{User Level Threads (ULT) and Kernel Level Threads (KLT)}
+\begin{itemize}
+  \item In ULT, each process has a thread table and the kernel has a process table
+  \item In KLT, the kernel has a process \underline{and} a thread table
+\end{itemize}
+In a scenario where you want to sleep a single thread within a process; if using ULT, the whole process encapsulating that single thread will be slept. When using KLT, the kernel has a thread table and hence, only the thread will be slept and not the whole process.\\
+\addfig{0.7}{levelThreads}{}{ULT and KLT}
+\end{flushleft}
+\newpage
+
+\subsection{Parallel Programming With Shared Memory (2)}
+\newpage
+\subsection{Pthreads - POSIX threads}
+Threads that adhere to the standardized implementation of IEEE POSIX are called POSIX threads or pthreads.\\
+This standardization is to make threads portable
+\null
+Threads are called lightweight processes (less overhead), because the only require the most basic resources to exist.
+pthreads have the following characteristics:\\
+\begin{itemize}
+  \item A thread lives within the scope of a process, and uses the resources (memory, stack) of the process.
+  \item A thread has it's own \textbf{stack pointer, registers, thread specificdata}
+  \item A thread terminates if its parent thread (or process) terminates
+  \item Changes made by one thread to shared system resources (such as closing a file) will be seen by all other threads.
+  \item Two pointers having the same value point to the same data.
+  \item Reading and writing to the same memory locations is possible, and therefore requires explicit synchronization by the programmer.
+  \item A thread can be created using much less operating overhead that a process
+  \item Serial application can also take advantage of threads, to simulate concurrency, when task need to progress independently
+\end{itemize}
+\subsubsection{Thread programming models}
+\begin{itemize}
+  \item \textbf{Manager/Worker} - a single thread, the manager assigns work to other threads, the workers. Typically, the manager handles all input and parcels out work to the other tasks. At least two forms of the manager/worker model are common: static worker pool and dynamic worker pool.
+  \item \textbf{Pipeline} -  task is broken into a series of suboperations, each of which is handled in series, but concurrently, by a different thread. An automobile assembly line best describes this model.
+  \item \textbf{Peer} - similar to the manager/worker model, but after the main thread creates other threads, it participates in the work.
+\end{itemize}
+\subsubsection{Deadlocks}
+The following four conditions (Coffman; Havender) are necessary but not sufficient for deadlock.\\
+\null
+Mutual exclusion: A resource can be assigned to at most one process at a time (no sharing).\\
+Hold and wait: A processing holding a resource is permitted to request another.\\
+No preemption: A process must release its resources; they cannot be taken away.\\
+Circular wait: There must be a chain of processes such that each member of the chain is waiting for a resource held by the next member of the chain.\\
+\null
+\subsubsection{Synchronization techniques}
+
+\begin{flushleft}
+\paragraph{Joining threads}
+Thread joining is a simple way of controlling multithreaded code. It allows a programmer to stop a thread, and
+wait until the calling thread has finnished its job. If you have two threads running concurrently, and you want one thread to wait until the
+other finnishes (maybe to accesss its computed data) you do so by joining them:
+\addfig{0.5}{ThreadJoining}{}{Synchronization by joining threads}
+When a thread is created, one can specidy whether its joinable or not. If its not, its called a detached thread.
+It is possible to change a thread from joinable to detached at runtime.\\
+\null
+
+\paragraph{Condition variables}
+Condition variables allow threads to wait until some event or condition has occurred.
+A condition variable must always be used together with a mutex. A given condition variable can have only one mutex associated with it, but a mutex can be used for more than one condition variable.\\
+\null
+\begin{itemize}
+  \item wait()
+  \item signal()
+
+\end{itemize}
+\paragraph{Semaphores}
+Introducing a blocked state eliminates the need of busy waiting. a blocked process is unblocked by another process
+doing a signal(). all processes are allowed to signal() or wait() in a semaphore (as opposed to mutexes).
+
+\begin{itemize}
+  \item A semaphore is a data structure with associated primitive operations
+  \item A semaphore is a queue of blocked processes
+  \addfig{0.5}{semaphoreDiagram}{}{Semaphore diagram}
+  \item Binary semaphore
+   A binary semaphore is a synchronization object that can have only two states: \textbf{Taken} and
+   \textbf{Not taken}\\
+   \null
+    Binary semaphores have no ownership attribute and can be released by any thread or interrupt handler regardless of who performed the last take operation. Because of this binary semaphores are often used to synchronize threads with external events implemented as ISRs, for example waiting for a packet from a network or waiting that a button is pressed.\\
+    \null
+    Because there is no ownership concept a binary semaphore object can be created to be either in the taken or not taken state initially.
+
+  \item Counting semaphore
+  A counting semaphore is a synchronization object that can hold more then one state, where each state represent an blocked process. N state represent the number of queued threads, if the number is negative there is -N queued threads, so a new thread will be placed in the queued. If the number is positive there is no waiting threads, and if its gets a signal or a wait no action will be taken.
+
+  \item General semaphore
+  Positive values shows number of free resources\\
+  Negative values shows number of blocked processes\\
+
+\end{itemize}
+\paragraph{Monitors}
+
+\paragraph{Barriers}
+Barriers are a group of processes. With a barrier, each process need to reach the barrier before they can continue to run. Once all processes has reach the barrier, they will all be released simultaneously to start the next iteration.
+\end{flushleft}
+\newpage
+
+\subsection{Message Passing Computing}
+
+\subsection{Parallel Programming Design}
+\subsection{Sorting and Searching}
+\subsection{Numerical Algorithms}
+\subsection{OpenMP revisited}
+\subsection{OpenMPI Revisited}
+\subsection{Summing Up}
+\section{Quiz answers}
+\subsection{Links}
+http://www.youtube.com/channel/UC7jgpE3sllixozoA4GzVRqQ
+
+
+
+\end{document} 

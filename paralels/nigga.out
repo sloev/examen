@@ -1,0 +1,29 @@
+\BOOKMARK [1][-]{section*.1}{Indhold}{}% 1
+\BOOKMARK [1][-]{section.1}{Exam notes}{}% 2
+\BOOKMARK [2][-]{subsection.1.1}{Introduction}{section.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.1.1}{Parallel programming}{subsection.1.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.1.2}{Flynn's taxonomy}{subsection.1.1}% 5
+\BOOKMARK [3][-]{subsubsection.1.1.3}{Amdahl's Law}{subsection.1.1}% 6
+\BOOKMARK [2][-]{subsection.1.2}{Multi-programming With Shared Memory}{section.1}% 7
+\BOOKMARK [3][-]{subsubsection.1.2.1}{Processes and Threads}{subsection.1.2}% 8
+\BOOKMARK [3][-]{subsubsection.1.2.2}{Thread synchronization}{subsection.1.2}% 9
+\BOOKMARK [3][-]{subsubsection.1.2.3}{User Level Threads \(ULT\) and Kernel Level Threads \(KLT\)}{subsection.1.2}% 10
+\BOOKMARK [2][-]{subsection.1.3}{Parallel Programming With Shared Memory \(2\)}{section.1}% 11
+\BOOKMARK [2][-]{subsection.1.4}{Pthreads - POSIX threads}{section.1}% 12
+\BOOKMARK [3][-]{subsubsection.1.4.1}{Thread programming models}{subsection.1.4}% 13
+\BOOKMARK [3][-]{subsubsection.1.4.2}{Deadlocks}{subsection.1.4}% 14
+\BOOKMARK [3][-]{subsubsection.1.4.3}{Synchronization techniques}{subsection.1.4}% 15
+\BOOKMARK [4][-]{paragraph.1.4.3.1}{Joining threads}{subsubsection.1.4.3}% 16
+\BOOKMARK [4][-]{paragraph.1.4.3.2}{Condition variables}{subsubsection.1.4.3}% 17
+\BOOKMARK [4][-]{paragraph.1.4.3.3}{Semaphores}{subsubsection.1.4.3}% 18
+\BOOKMARK [4][-]{paragraph.1.4.3.4}{Monitors}{subsubsection.1.4.3}% 19
+\BOOKMARK [4][-]{paragraph.1.4.3.5}{Barriers}{subsubsection.1.4.3}% 20
+\BOOKMARK [2][-]{subsection.1.5}{Message Passing Computing}{section.1}% 21
+\BOOKMARK [2][-]{subsection.1.6}{Parallel Programming Design}{section.1}% 22
+\BOOKMARK [2][-]{subsection.1.7}{Sorting and Searching}{section.1}% 23
+\BOOKMARK [2][-]{subsection.1.8}{Numerical Algorithms}{section.1}% 24
+\BOOKMARK [2][-]{subsection.1.9}{OpenMP revisited}{section.1}% 25
+\BOOKMARK [2][-]{subsection.1.10}{OpenMPI Revisited}{section.1}% 26
+\BOOKMARK [2][-]{subsection.1.11}{Summing Up}{section.1}% 27
+\BOOKMARK [1][-]{section.2}{Quiz answers}{}% 28
+\BOOKMARK [2][-]{subsection.2.1}{Links}{section.2}% 29
