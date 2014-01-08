@@ -1,0 +1,68 @@
+***virtual memory
+mellem hardware memory og virtuel memory findes der en tabel der mapper fra virtuel til hardware.
+mekanismen til oversættelse hedder MMU.
+
+cpu programtælleren kører med de virtuelle addresser og bruger mmu til at finde ud af om de findes i ram.
+
+hvis der er brug for flere pages end der kan være i rammen men så swapper unix ubrugte sider ned på disken og giver plads til de nye pages.
+
+pagefault opleves når et program starter.
+når et program starter er der intet i hardware ram'en.
+så den første pagefault vil fortælle at der ikke er de pages der skal bruges hvilket kernen sørger for at få læst ind.
+
+thrashing betyder at hoppe helt vildt frem og tilbage.
+dette sker når fysisk ram er opbrugt hvilket medfører at programmer hele tiden lave page faults som får kernen til at indhente nye pages som medfører swapping af andre pages osv osv.
+
+hvad page vælger den at fjerne?
+det er nok bedst at smide dem ud den ikke har brugt længe. smid "least used ud"
+altså hvis en page bruges sættes den i enden af og hvis en page er i starten af rækken er den "least used" den kan dog stadig bruges hvorved den flyttes til enden og bliver most used. 
+
+det er Least used der swappes til disken.
+
+shmat er processen hvor man når man har besluttet at en fil ikke skal være i ram længere så skrives den med alle ændringer til disken.
+
+
+fordelen ved en stor side er at man kan hive mere data ind.
+ulempen er at man ikke bruger de mindre fragmenter af rammen samt at det tager længere tid at hive frem og tilbage fra virtuel ram til ram samt fra ram til disk.
+
+
+****5
+denial of service:
+availability
+
+modifying...:
+confidentiality/integrity
+
+network snooping:
+confidentiality
+
+successfull buffer overflow attack:
+cofidentiality,availability,integrity
+
+****6
+
+
+****7
+en process:
+et instantiated program (en instans)
+
+en tråd:
+en kørende instans af en funktion i et program
+
+hvordan holder man øje med dem:
+de har et id. 
+
+hvorfor bruge flere processer?:
+flere adresse rum. uafhængige processer. en process der crasher river ikke de andre med i faldet.
+
+hvorfor threads:
+hurtigt
+bruges i situationer hvor en process har brug for at behandler mange requests.
+
+*****8
+læs/skriv bruges i:
+lokalt åbne en fil/skrive til en fil
+lokalt mellem processer med pipefiler til at læse/skrive mellem processer
+nætværk med sockets til at skrive læse mellem noder i et netværk.
+
+ 
